@@ -16,11 +16,11 @@ class Node {
 }
 
 class MyQueue {
-    #size = 0
+    #size = 0;
     constructor(val) {
         this.head = null;
         this.tail = null;
-        
+
         if (val !== undefined) {
             const node = new Node(val);
             this.head = node;
@@ -67,28 +67,45 @@ class MyQueue {
     }
 
     empty() {
-        return this.size === 0;
+        return this.#size === 0;
     }
 }
-
 
 /**
  * @param {TreeNode} root
  * @return {number[][]}
  */
-var levelOrder = function(root) {
+var levelOrder = function (root) {
     const queue = new MyQueue();
     const ans = [];
     if (root) queue.push(root);
-    while(!queue.empty()) {
+    while (!queue.empty()) {
         const result = [];
         const size = queue.size();
         for (let i = 0; i < size; i++) {
             const popNode = queue.pop();
             result.push(popNode.val);
+            if (popNode.left) queue.push(popNode.left);
+            if (popNode.right) queue.push(popNode.right);
         }
         ans.push(result);
     }
-    
+
     return ans;
 };
+
+function TreeNode(val) {
+    this.val = val;
+    this.left = null;
+    this.right = null;
+}
+// [3, 9, 20, null, null, 15, 7]
+const root = new TreeNode(3);
+root.left = new TreeNode(9);
+root.right = new TreeNode(20);
+root.right.left = new TreeNode(15);
+root.right.right = new TreeNode(7);
+
+console.log(root);
+const ans = levelOrder(root);
+console.log(ans);
