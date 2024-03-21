@@ -123,6 +123,8 @@ var preorderTraversal = function(root) {
  *     this.right = (right===undefined ? null : right)
  * }
  */
+
+// 递归解法
 /**
  * @param {TreeNode} root
  * @return {boolean}
@@ -143,6 +145,88 @@ var isBalanced = function (root) {
     return balanced(root).balanced;
 };
 
+
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function (root) {
+    function balanced(root) {
+        if (root === null) {
+            return 0;
+        }
+
+        const leftTreeDepth = balanced(root.left);
+        console.log(root.val, 'leftTreeDepth: ', leftTreeDepth);
+        if (leftTreeDepth === -1) return -1;
+        const rightTreeDepth = balanced(root.right);
+        console.log(root.val, 'rightTreeDepth: ', rightTreeDepth);
+        if (rightTreeDepth === -1) return -1;
+        return Math.abs(leftTreeDepth - rightTreeDepth) > 1 ? -1 : Math.max(leftTreeDepth, rightTreeDepth) + 1;
+    }
+    const depth = balanced(root);
+    return depth !== -1;
+};
+
+
+// 迭代解法
+function getDepth(root) {
+    if (root === null) {
+        return 0;
+    }
+    return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+}
+
+
+function getDepth(root) {
+    if (root === null) {
+        return 0;
+    }
+    const stack = [root];
+    let depth = 0, result = 0;
+    while (stack.length !== 0) {
+        const orderNode = stack.pop();
+        if (orderNode === null) {
+            // 所有子节点均访问过
+            depth--;
+            stack.pop();
+            continue;
+        }
+        stack.push(orderNode);
+        stack.push(null);
+        // 访问子节点
+        if (orderNode.right) {
+            stack.push(orderNode.right);
+        }
+
+        if (orderNode.left) {
+            stack.push(orderNode.left);
+        }
+        result = Math.max(result, ++depth);
+    }
+    return result;
+}
+
+var isBalanced = function(root) {
+    if (!root) return true;
+    const stack = [root];
+    while (stack.length !== 0) {
+        const popNode = stack.pop();
+        console.log('leftDepth:', getDepth(popNode.left), 'rightDepth:', getDepth(popNode.right));
+        if (Math.abs(getDepth(popNode.left) - getDepth(popNode.right)) > 1) {
+            return false;
+        }
+
+        if (popNode.left) {
+            stack.push(popNode.left);
+        }
+
+        if (popNode.right) {
+            stack.push(popNode.right);
+        }
+    }
+    return true
+}
 
 // 创建二叉树
 function TreeNode(val, left, right) {
@@ -173,8 +257,10 @@ function createTree(arr) {
     return root;
 }
 
-const arr = [1, 2, 2, 3, 3, null, null, 4, 4];
+const arr = [1,2,2,3,3,null,null,4,4];
 const root = createTree(arr);
-
-console.log(isBalanced(root));
+const results = getDepth(root);
+console.log(results);
+// console.log('depth:', getDepth(root));
+// console.log(isBalanced(root));
 
