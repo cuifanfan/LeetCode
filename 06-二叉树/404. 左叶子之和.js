@@ -36,6 +36,22 @@ var sumOfLeftLeaves = function(root) {
     return ans;
 };
 
+// 递归写法
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumOfLeftLeaves = function(root) {
+    if (root === null) {
+        return 0;
+    }
+
+    if (root.left && root.left.left === null && root.left.right === null) {
+        return root.left.val +  sumOfLeftLeaves(root.right);
+    }
+
+    return sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+};
 
 // 创建二叉树
 function TreeNode(val, left, right) {
