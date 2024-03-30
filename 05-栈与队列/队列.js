@@ -45,6 +45,10 @@ class MyQueue {
         this.#size++;
     }
 
+    size() {
+        return this.#size;
+    }
+
     peek() {
         if (!this.head) {
             return null;
