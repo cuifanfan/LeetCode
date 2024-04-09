@@ -33,7 +33,7 @@ var constructMaximumBinaryTree = function (nums, left = 0, right = nums.length -
     }
     const maxNode = new TreeNode(maxValue);
     maxNode.left = constructMaximumBinaryTree(nums, left, maxIndex - 1);
-    maxIndex.right = constructMaximumBinaryTree(nums, maxIndex + 1, right);
+    maxNode.right = constructMaximumBinaryTree(nums, maxIndex + 1, right);
     return maxNode;
 };
 
