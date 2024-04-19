@@ -33,6 +33,60 @@ var getMinimumDifference = function (root) {
     return Math.min(currLeftMin, currRightMin, getMinimumDifference(root.left), getMinimumDifference(root.right));
 };
 
+// 二叉搜索树进行中序遍历，就是升序
+
+// 中序遍历
+function traversal(root, callback) {
+    if (root === null) {
+        return;
+    }
+    const stack = [root];
+    while (stack.length !== 0) {
+        const orderNode = stack.pop();
+        if (orderNode === null) {
+            const accessNode = stack.pop();
+            callback && callback(accessNode);
+            continue;
+        }
+        orderNode.right && stack.push(orderNode.right);
+        stack.push(orderNode, null);
+        orderNode.left && stack.push(orderNode.left);
+    }
+}
+
+var getMinimumDifference = function (root) {
+    let ans = Infinity;
+    let prev = null;
+    traversal(root, (node) => {
+        if (prev !== null) {
+            ans = Math.min(ans, Math.abs(node.val - prev.val));
+        }
+        prev = node;
+    });
+    return ans;
+}
+
+
+var getMinimumDifference = function (root) {
+    let ans = Infinity, prev = null;
+    const stack = [root];
+    while (stack.length !== 0) {
+        const orderNode = stack.pop();
+        if (orderNode === null) {
+            const accessNode = stack.pop();
+            if (prev !== null) {
+                ans = Math.min(ans, Math.abs(accessNode.val - prev.val));
+            }
+            prev = accessNode;
+            continue;
+        }
+        orderNode.right && stack.push(orderNode.right);
+        stack.push(orderNode, null);
+        orderNode.left && stack.push(orderNode.left);
+    }
+    return ans;
+}
+
 function TreeNode(val, left, right) {
     this.val = (val === undefined ? 0 : val)
     this.left = (left === undefined ? null : left)
