@@ -15,6 +15,25 @@ function traversal(root, callback) {
     traversal(root.right, callback);
 }
 
+function traversal(root, callback) {
+    if (root === null) {
+        return;
+    }
+
+    const stack = [root];
+    while (stack.length !== 0) {
+        const orderNode = stack.pop();
+        if (orderNode === null) {
+            const accessNode = stack.pop();
+            callback && callback(accessNode);
+            continue;
+        }
+        if (orderNode.right) stack.push(orderNode.right);
+        stack.push(orderNode, null);
+        if (orderNode.left) stack.push(orderNode.left);
+    }
+}
+
 /**
  * @param {TreeNode} root
  * @return {number[]}
