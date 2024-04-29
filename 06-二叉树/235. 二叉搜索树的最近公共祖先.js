@@ -13,17 +13,16 @@
  * @return {TreeNode}
  */
 var lowestCommonAncestor = function(root, p, q) {
-    if (root === null || root === p || root === q) {
-        return root;
+    let curr = root;
+    while (curr) {
+        if (curr.val < Math.min(p.val, q.val)) {
+            curr = curr.right;
+        } else if (curr.val > Math.max(p.val, q.val)) {
+            curr = curr.left;
+        } else {
+            // 分岔口或者相等
+            break;
+        }
     }
-    
-    const left = lowestCommonAncestor(root.left);
-    const right = lowestCommonAncestor(root.right);
-
-    if (left !== null && right !== null) {
-        return root;
-    }
-
-    // 至少有一个为null
-    return left === null ? right : left;
+    return curr;
 };
