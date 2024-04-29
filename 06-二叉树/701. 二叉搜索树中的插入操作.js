@@ -171,7 +171,48 @@ var insertIntoBST = function (root, val) {
     return root;
 };
 
-const root = [61, 46, 66, 43, null, null, null, 39, null, null, null], val = 88;
+/**
+ * @param {TreeNode} root
+ * @param {number} val
+ * @return {TreeNode}
+ */
+var insertIntoBST = function (root, val) {
+    if (root === null) {
+        return new TreeNode(val);
+    }
+    if (root.val > val) {
+        root.left = insertIntoBST(root.left, val);
+    } 
+    if (root.val < val) {
+        root.right = insertIntoBST(root.right, val);
+    }
+    return root;
+};
+
+var insertIntoBST = function (root, val) {
+    const newNode = new TreeNode(val);
+    if (root === null) {
+        return newNode;
+    }
+    let curr = root, prev = curr;
+    while (curr) {
+        prev = curr;
+        if (curr.val < val) {
+            curr = curr.right;
+        }  else if (curr.val > val) {
+            curr = curr.left;
+        }
+    }
+    if (prev.val > val) {
+        prev.left = newNode;
+    }
+    if (prev.val < val) {
+        prev.right = newNode;
+    }
+    return root;
+};
+
+const root = [40,20,60,10,30,50,70], val = 25;
 const treeRoot = createTree(root);
 const newRoot = insertIntoBST(treeRoot, val);
 
